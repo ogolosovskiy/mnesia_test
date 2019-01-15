@@ -31,7 +31,12 @@ start_link() ->
 %% Before OTP 18 tuples must be used to specify a child. e.g.
 %% Child :: {Id,StartFunc,Restart,Shutdown,Type,Modules}
 init([]) ->
-    {ok, {{one_for_all, 0, 1}, []}}.
+
+    Tester = {monitor, {mnesia_test_gen, start_link, []},
+        permanent, 2000, worker, [mnesia_test_gen]},
+    Childrens = [Tester],
+    RestartStrategy = {one_for_one, 0, 1},
+    {ok, {RestartStrategy, Childrens}}.
 
 %%====================================================================
 %% Internal functions

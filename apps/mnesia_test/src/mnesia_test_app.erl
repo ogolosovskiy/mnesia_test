@@ -15,6 +15,7 @@
 %%====================================================================
 
 start(_StartType, _StartArgs) ->
+    lager:set_loglevel(lager_console_backend, debug),
     mnesia_test_sup:start_link().
 
 %%--------------------------------------------------------------------
